@@ -12,10 +12,19 @@ public class Ingredient {
 
 	private String description;
 	private BigDecimal amount;
-//	private UnitOfMeasure uom;
+	@OneToOne
+	private UnitOfMeasure uom;
 
 	@ManyToOne
 	private Recipe recipe;
+
+	public UnitOfMeasure getUom() {
+		return uom;
+	}
+
+	public void setUom(UnitOfMeasure uom) {
+		this.uom = uom;
+	}
 
 	public Recipe getRecipe() {
 		return recipe;
