@@ -9,7 +9,6 @@ public class Recipe {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)    //Identity will support an automatic generation to Sequence
 	private Long id;
-
 	private String description;
 	private int prepTime;
 	private int cookTime;
@@ -17,7 +16,10 @@ public class Recipe {
 	private String source;
 	private String url;
 	private String directions;
-//	private Difficulty difficulty;
+
+	@Enumerated(value = EnumType.STRING)
+	private Difficulty difficulty;
+
 	@Lob
 	private Byte[] image;
 
@@ -29,6 +31,14 @@ public class Recipe {
 
 //	-------------------------------------------------------------------------------
 
+
+	public Difficulty getDifficulty() {
+		return difficulty;
+	}
+
+	public void setDifficulty(Difficulty difficulty) {
+		this.difficulty = difficulty;
+	}
 
 	public Set<Ingredient> getIngredients() {
 		return ingredients;
