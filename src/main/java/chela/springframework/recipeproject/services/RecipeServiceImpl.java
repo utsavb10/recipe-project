@@ -2,11 +2,13 @@ package chela.springframework.recipeproject.services;
 
 import chela.springframework.recipeproject.domain.Recipe;
 import chela.springframework.recipeproject.repository.RecipeRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Slf4j
 @Service
 public class RecipeServiceImpl implements RecipeService{
 
@@ -18,6 +20,7 @@ public class RecipeServiceImpl implements RecipeService{
 
 	@Override
 	public Set<Recipe> getAllRecipes() {
+		log.debug("Service called and working");
 		Set<Recipe> hashSet = new HashSet<>();
 		recipeRepository.findAll().forEach(recipe -> {
 			hashSet.add(recipe);
