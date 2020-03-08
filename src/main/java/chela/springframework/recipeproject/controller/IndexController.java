@@ -5,12 +5,14 @@ import chela.springframework.recipeproject.domain.UnitOfMeasure;
 import chela.springframework.recipeproject.repository.CategoryRepository;
 import chela.springframework.recipeproject.repository.UnitOfMeasureRepository;
 import chela.springframework.recipeproject.services.RecipeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
 
+@Slf4j
 @Controller
 public class IndexController {
 
@@ -29,7 +31,7 @@ public class IndexController {
 //
 //		System.out.println("cat id is= "+ categoryOptional.get().getId());
 //		System.out.println("uom id is= "+ unitOfMeasureOptional.get().getId());
-
+		log.debug("calling IndexController");
 		model.addAttribute("recipes", recipeService.getAllRecipes());
 
 		return "index";

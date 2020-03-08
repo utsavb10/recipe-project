@@ -1,6 +1,6 @@
 package chela.springframework.recipeproject.domain;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -42,15 +42,19 @@ public class Recipe {
 	private Set<Category> categories = new HashSet<>();
 
 //	-------------------------------------------------------------------------------
-	public void setNotes(Notes notes) {
-		this.notes = notes;
-		notes.setRecipe(this);
-	}
 
 	public Recipe addIngredient(Ingredient ingredient){
 		ingredient.setRecipe(this);
 		this.ingredients.add(ingredient);
 		return this;
+	}
+
+	public void setNotes(Notes notes) {
+		this.notes = notes;
+		notes.setRecipe(this);
+	}
+	protected boolean canEqual(final Object other) {
+		return other instanceof Recipe;
 	}
 
 }

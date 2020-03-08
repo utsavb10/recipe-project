@@ -4,16 +4,20 @@ import chela.springframework.recipeproject.domain.*;
 import chela.springframework.recipeproject.repository.CategoryRepository;
 import chela.springframework.recipeproject.repository.RecipeRepository;
 import chela.springframework.recipeproject.repository.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Component
+@Transactional //don't what it does
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
 	private final CategoryRepository categoryRepository;
@@ -35,7 +39,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
 		List<Recipe> recipes = new ArrayList<>(2);
 
-		//get UOMs
+		log.debug("get UOMs");
 		Optional<UnitOfMeasure> eachUomOptional = unitOfMeasureRepository.findByDescription("Each");
 
 		if(!eachUomOptional.isPresent()){
@@ -72,7 +76,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 			throw new RuntimeException("Expected UOM Not Found");
 		}
 
-		//get optionals
+		log.debug("get optionals");
 		UnitOfMeasure eachUom = eachUomOptional.get();
 		UnitOfMeasure tableSpoonUom = tableSpoonUomOptional.get();
 		UnitOfMeasure teapoonUom = tableSpoonUomOptional.get();
@@ -80,7 +84,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 		UnitOfMeasure pintUom = pintUomOptional.get();
 		UnitOfMeasure cupsUom = cupsUomOptional.get();
 
-		//get Categories
+		log.debug("get Categories");
 		Optional<Category> americanCategoryOptional = categoryRepository.findByDescription("American");
 
 		if(!americanCategoryOptional.isPresent()){
@@ -96,7 +100,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 		Category americanCategory = americanCategoryOptional.get();
 		Category mexicanCategory = mexicanCategoryOptional.get();
 
-		//Yummy Guac
+		log.debug("Yummy Guac");
 		Recipe guacRecipe = new Recipe();
 		guacRecipe.setDescription("Perfect Guacamole");
 		guacRecipe.setPrepTime(10);
@@ -138,10 +142,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 		guacRecipe.getCategories().add(americanCategory);
 		guacRecipe.getCategories().add(mexicanCategory);
 
-		//add to return list
+		log.debug("add to return list");
 		recipes.add(guacRecipe);
 
-		//Yummy Tacos
+		log.debug("Yummy Tacos");
 		Recipe tacosRecipe = new Recipe();
 		tacosRecipe.setDescription("Spicy Grilled Chicken Taco");
 		tacosRecipe.setCookTime(9);
