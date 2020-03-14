@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Slf4j
 @Component
-@Transactional //don't what it does
+@Transactional //don't know what it does
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
 	private final CategoryRepository categoryRepository;
