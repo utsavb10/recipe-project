@@ -8,7 +8,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -25,6 +27,22 @@ class RecipeServiceImplTest {
 		MockitoAnnotations.initMocks( this); //Initialize Mocks from this class
 
 		recipeService = new RecipeServiceImpl(recipeRepository);
+	}
+
+	@Test
+	void getRecipeByID(){
+		Recipe recipe = new Recipe();
+		recipe.setId(1L);
+		Optional<Recipe> recipeOptional = Optional.of(recipe);
+
+		when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+		Recipe recieved = recipeService.findById(1L);
+
+		assertNotNull(recieved, "No Recipe Found");
+		verify(recipeRepository).findById(anyLong());
+		verify(recipeRepository, never()).findAll();
+
 	}
 
 	@Test
