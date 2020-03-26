@@ -1,5 +1,8 @@
 package chela.springframework.recipeproject.services;
 
+import chela.springframework.recipeproject.command.RecipeCommand;
+import chela.springframework.recipeproject.convertors.RecipeCommandToRecipe;
+import chela.springframework.recipeproject.convertors.RecipeToRecipeCommand;
 import chela.springframework.recipeproject.domain.Recipe;
 import chela.springframework.recipeproject.repository.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -14,9 +17,13 @@ import java.util.Set;
 public class RecipeServiceImpl implements RecipeService{
 
 	private final RecipeRepository recipeRepository;
+	private final RecipeCommandToRecipe recipeCommandToRecipe;
+	private final RecipeToRecipeCommand recipeToRecipeCommand;
 
-	public RecipeServiceImpl(RecipeRepository recipeRepository) {
+	public RecipeServiceImpl(RecipeRepository recipeRepository, RecipeCommandToRecipe recipeCommandToRecipe, RecipeToRecipeCommand recipeToRecipeCommand) {
 		this.recipeRepository = recipeRepository;
+		this.recipeCommandToRecipe = recipeCommandToRecipe;
+		this.recipeToRecipeCommand = recipeToRecipeCommand;
 	}
 
 	@Override
@@ -37,5 +44,14 @@ public class RecipeServiceImpl implements RecipeService{
 			throw new RuntimeException("Recipe not found");
 		}
 		return getRecipe.get();
+	}
+
+	@Override
+	public RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand) {
+		Recipe detachedRecipe = recipeCommandToRecipe.convert(recipeCommand);
+
+		Recipe savedRecipe = recipeRepository.save(detachedRecipe);
+		log.debug("recipe saved : "+savedRecipe.getId());
+		return recipeToRecipeCommand.convert(savedRecipe);
 	}
 }
