@@ -1,5 +1,6 @@
 package chela.springframework.recipeproject.controller;
 
+import chela.springframework.recipeproject.command.RecipeCommand;
 import chela.springframework.recipeproject.services.RecipeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,5 +19,11 @@ public class RecipeController {
 	public String getRecipeById(@PathVariable("id") String id, Model model){
 		model.addAttribute("recipe", recipeService.findById(Long.valueOf(id)));
 		return "recipe/show";
+	}
+
+	@RequestMapping("/recipe/new")
+	public String newRecipe(Model model){
+		model.addAttribute("recipe", new RecipeCommand());
+		return "recipe/recipeform";
 	}
 }
