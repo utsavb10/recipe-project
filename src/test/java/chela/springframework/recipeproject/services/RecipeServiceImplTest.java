@@ -1,5 +1,7 @@
 package chela.springframework.recipeproject.services;
 
+import chela.springframework.recipeproject.convertors.RecipeCommandToRecipe;
+import chela.springframework.recipeproject.convertors.RecipeToRecipeCommand;
 import chela.springframework.recipeproject.domain.Recipe;
 import chela.springframework.recipeproject.repository.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,12 +23,16 @@ class RecipeServiceImplTest {
 
 	@Mock
 	RecipeRepository recipeRepository;
+	@Mock
+	RecipeToRecipeCommand recipeToRecipeCommand;
+	@Mock
+	RecipeCommandToRecipe recipeCommandToRecipe;
 
 	@BeforeEach
 	void setUp() {
 		MockitoAnnotations.initMocks( this); //Initialize Mocks from this class
 
-		recipeService = new RecipeServiceImpl(recipeRepository);
+		recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
 	}
 
 	@Test
