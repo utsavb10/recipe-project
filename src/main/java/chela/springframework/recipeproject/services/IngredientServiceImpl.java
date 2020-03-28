@@ -97,6 +97,7 @@ public class IngredientServiceImpl implements IngredientService{
 	}
 
 	@Override
+	@Transactional
 	public void deleteIngredientByRecipeIdAndId(Long recipeId, Long id) {
 		Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
 		if(!optionalRecipe.isPresent()){
