@@ -1,6 +1,8 @@
 package chela.springframework.recipeproject.controller;
 
 import chela.springframework.recipeproject.command.IngredientCommand;
+import chela.springframework.recipeproject.command.RecipeCommand;
+import chela.springframework.recipeproject.command.UnitOfMeasureCommand;
 import chela.springframework.recipeproject.services.IngredientService;
 import chela.springframework.recipeproject.services.RecipeService;
 import chela.springframework.recipeproject.services.UnitOfMeasureService;
@@ -53,5 +55,20 @@ public class IngredientController {
 		log.debug("IngredientID: "+ savedIngredientCommand.getId());
 
 		return "redirect:/recipe/"+savedIngredientCommand.getRecipeId()+"/ingredient/"+savedIngredientCommand.getId()+"/show";
+	}
+
+	@GetMapping
+	@RequestMapping("recipe/{recipeId}/ingredient/new")
+	public String newIngredient(@PathVariable String recipeId, Model model){
+		RecipeCommand recipeCommand = recipeService.findRecipeCommandById(Long.valueOf(recipeId));
+
+		IngredientCommand ingredientCommand = new IngredientCommand();
+		ingredientCommand.setRecipeId(recipeCommand.getId());
+		model.addAttribute("ingredient", ingredientCommand);
+
+		ingredientCommand.setUnitOfMeasureCommand(new UnitOfMeasureCommand());
+
+		model.addAttribute("uomList", unitOfMeasureService.findAllUoms());
+		return "recipe/ingredient/ingredientform";
 	}
 }
