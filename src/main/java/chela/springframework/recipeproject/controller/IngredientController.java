@@ -39,7 +39,7 @@ public class IngredientController {
 	}
 
 	@GetMapping
-	@RequestMapping("/recipe/{recipeId}/ingredient/{id}/update")   //fetches existing Ingredient info to ingredient form for update
+	@RequestMapping("/recipe/{recipeId}/ingredient/{id}/update")   //fetches existing IngredientCommand info to ingredientform for update
 	public String updateIngredient(@PathVariable String recipeId, @PathVariable String id, Model model){
 		model.addAttribute("ingredient", ingredientService.findIngredientByRecipeIdAndId(Long.valueOf(recipeId), Long.valueOf(id)));
 		model.addAttribute("uomList", unitOfMeasureService.findAllUoms());
@@ -58,7 +58,7 @@ public class IngredientController {
 	}
 
 	@GetMapping
-	@RequestMapping("recipe/{recipeId}/ingredient/new")
+	@RequestMapping("recipe/{recipeId}/ingredient/new")  //fetches an empty IngredientCommand info to ingredientform for create
 	public String newIngredient(@PathVariable String recipeId, Model model){
 		RecipeCommand recipeCommand = recipeService.findRecipeCommandById(Long.valueOf(recipeId));
 
@@ -70,5 +70,11 @@ public class IngredientController {
 
 		model.addAttribute("uomList", unitOfMeasureService.findAllUoms());
 		return "recipe/ingredient/ingredientform";
+	}
+
+	@RequestMapping("/recipe/{recipeId}/ingredient/{id}/delete")
+	public String deleteIngredient(@PathVariable String recipeId, @PathVariable String id){
+		ingredientService.deleteIngredientByRecipeIdAndId(Long.valueOf(recipeId), Long.valueOf(id));
+		return "redirect:/recipe/"+recipeId+"/ingredients";
 	}
 }

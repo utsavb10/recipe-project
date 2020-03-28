@@ -10,6 +10,8 @@ import chela.springframework.recipeproject.repository.UnitOfMeasureRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -91,6 +93,28 @@ public class IngredientServiceImpl implements IngredientService{
 			}
 
 			return ingredientToIngredientCommand.convert(optionalIngredient.get());
+		}
+	}
+
+	@Override
+	public void deleteIngredientByRecipeIdAndId(Long recipeId, Long id) {
+		Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
+		if(!optionalRecipe.isPresent()){
+			log.error("Recipe doen't exist");
+		}
+		Recipe savedRecipe = optionalRecipe.get();
+		Optional<Ingredient> optionalIngredient = savedRecipe.getIngredients().stream()
+			.filter(ingredient -> ingredient.getId().equals(id))
+			.findFirst();
+
+		if(optionalIngredient.isPresent()){
+			Ingredient deleteIngredient = optionalIngredient.get();
+			deleteIngredient.setRecipe(null);
+			savedRecipe.getIngredients().remove(deleteIngredient);
+			recipeRepository.save(savedRecipe);
+		}
+		else{
+			log.debug("No ingredient to delete");
 		}
 	}
 }
