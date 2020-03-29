@@ -4,6 +4,7 @@ import chela.springframework.recipeproject.command.RecipeCommand;
 import chela.springframework.recipeproject.convertors.RecipeCommandToRecipe;
 import chela.springframework.recipeproject.convertors.RecipeToRecipeCommand;
 import chela.springframework.recipeproject.domain.Recipe;
+import chela.springframework.recipeproject.exception.NotFoundException;
 import chela.springframework.recipeproject.repository.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class RecipeServiceImpl implements RecipeService{
 	public Recipe findById(Long id) {
 		Optional<Recipe> getRecipe = recipeRepository.findById(id);
 		if(!getRecipe.isPresent()){
-			throw new RuntimeException("Recipe not found");
+			throw new NotFoundException("Recipe not found");
 		}
 		return getRecipe.get();
 	}
