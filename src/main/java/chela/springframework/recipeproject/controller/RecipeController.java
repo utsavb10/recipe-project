@@ -62,4 +62,14 @@ public class RecipeController {
 		mav.setViewName("404error");
 		return mav;
 	}
+
+	//writing a view fro 404errors
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(NumberFormatException.class)
+	public ModelAndView badRequestException(){
+		log.error("Handling a number format exception");
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("400error");
+		return mav;
+	}
 }
